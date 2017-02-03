@@ -4,6 +4,7 @@
 
 <% content_for :page_actions do %>
   <%= link_to_with_icon 'arrow-left', Spree.t(:back_to_resource_list, resource: Spree.t(:report)), spree.admin_reports_url, class: 'btn btn-default' %>
+  <%= link_to("Export Report", sales_sku_admin_reports_path(format: :csv), class: "btn btn-success",) %>
 <% end %>
 
 <table class="table table-bordered admin-report" data-hook="sales_sku">
@@ -18,7 +19,7 @@
   <tbody>
     <% @item_sales.each do |item| %>
       <tr>
-        <td><%= item[:sku] %></td>
+        <td><%= link_to item[:sku], edit_admin_product_path(item[:product_id]) %></td>
         <td><%= item[:variant_name] || item[:name] %></td>
         <td><%= item[:quantity] %></td>
         <td><%= display_money(item[:amount] / 1.19) %></td>
