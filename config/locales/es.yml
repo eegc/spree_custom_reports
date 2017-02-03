@@ -1,0 +1,9 @@
+es:
+  spree:
+    sales_sku: Ventas por Producto
+    sales_sku_description: Total de ventas por producto de todos los pedidos
+    sku: Codigo/SKU
+    name: Nombre
+    quantity: Items Vendidos
+    gross_price: Monto sin IVA
+

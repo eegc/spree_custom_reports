@@ -1,0 +1,31 @@
+<% content_for :page_title do %>
+  <%= Spree.t(:sales_sku) %>
+<% end %>
+
+<% content_for :page_actions do %>
+  <%= link_to_with_icon 'arrow-left', Spree.t(:back_to_resource_list, resource: Spree.t(:report)), spree.admin_reports_url, class: 'btn btn-default' %>
+  <%= link_to("Export Report", sales_sku_admin_reports_path(format: :csv), class: "btn btn-success",) %>
+<% end %>
+
+<table class="table table-bordered admin-report" data-hook="sales_sku">
+  <thead>
+    <tr>
+      <th><%= Spree.t(:sku) %></th>
+      <th><%= Spree.t(:name) %></th>
+      <th><%= Spree.t(:quantity) %></th>
+      <th><%= Spree.t(:gross_price) %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @item_sales.each do |item| %>
+      <tr>
+        <td><%= link_to item[:sku], edit_admin_product_path(item[:product_id]) %></td>
+        <td><%= item[:variant_name] || item[:name] %></td>
+        <td><%= item[:quantity] %></td>
+        <td><%= display_money(item[:amount] / 1.19) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @item_sales %>
