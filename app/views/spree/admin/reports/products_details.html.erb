@@ -7,27 +7,31 @@
   <%= link_to("Export Report", products_details_admin_reports_path(format: :csv), class: "btn btn-success",) %>
 <% end %>
 
-<table class="table table-bordered admin-report" data-hook="sales_sku">
-  <thead>
-    <tr>
-      <th><%= Spree.t(:sku) %></th>
-      <th><%= Spree.t(:taxons) %></th>
-      <th><%= Spree.t(:description) %></th>
-      <th><%= Spree.t(:brand) %></th>
-      <th><%= Spree.t(:availability) %></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @items.each do |item| %>
+<div>
+  <table class="table table-bordered admin-report" data-hook="sales_sku">
+    <thead>
       <tr>
-        <td><%= link_to item[:sku], edit_admin_product_path(item[:product_id]) %></td>
-        <td><%= item[:taxons].join(', ') %></td>
-        <td><%= strip_tags item[:description] %></td>
-        <td><%= item[:brand] %></td>
-        <td><%= Spree.t("available.#{product_available?(item)}") %></td>
+        <th><%= Spree.t(:sku) %></th>
+        <th><%= Spree.t(:taxons) %></th>
+        <th><%= Spree.t(:description) %></th>
+        <th><%= Spree.t(:brand) %></th>
+        <th><%= Spree.t(:availability) %></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @items.each do |item| %>
+        <tr>
+          <td><%= link_to item[:sku], edit_admin_product_path(item[:product_id]) %></td>
+          <td><%= item[:taxons].join(', ') %></td>
+          <td><%= strip_tags(item[:description]) %></td>
+          <td><%= item[:brand] %></td>
+          <td><%= Spree.t("available.#{product_available?(item)}") %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 
-<%= paginate @items %>
+<div>
+  <%= paginate @items %>
+</div>
