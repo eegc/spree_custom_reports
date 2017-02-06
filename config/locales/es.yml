@@ -6,4 +6,11 @@ es:
     name: Nombre
     quantity: Items Vendidos
     gross_price: Monto sin IVA
+    brand: "Marca"
+    description: "Descripción"
+    taxons: "Categorias"
+    availability: "Disponibilidad"
+    available:
+      'true': "Disponible"
+      'false': "No Disponible"
 
