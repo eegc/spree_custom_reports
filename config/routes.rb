@@ -4,6 +4,8 @@ Spree::Core::Engine.routes.draw do
       collection do
         get   :sales_sku
         post  :sales_sku
+        get   :products_details
+        post  :products_details
       end
     end
   end

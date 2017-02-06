@@ -1,5 +1,5 @@
 Spree::Admin::ReportsController.class_eval do
-  before_filter :add_sales_sku, only: :index
+  before_filter :add_custom_reports, only: :index
 
   def sales_sku
     respond_to do |format|
@@ -8,9 +8,17 @@ Spree::Admin::ReportsController.class_eval do
     end
   end
 
+  def products_details
+    respond_to do |format|
+      format.html { @items = Kaminari.paginate_array(Spree::Variant.variant_data.to_a).page(params[:page]).per(10) }
+      format.csv  { send_data Spree::Variant.variant_data_csv, filename: "#{Spree.t(:products_details).parameterize}-#{Date.today}.csv" }
+    end
+  end
+
   private
 
-  def add_sales_sku
+  def add_custom_reports
     Spree::Admin::ReportsController.add_available_report!(:sales_sku)
+    Spree::Admin::ReportsController.add_available_report!(:products_details)
   end
 end

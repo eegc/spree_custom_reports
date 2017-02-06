@@ -2,8 +2,17 @@ es:
   spree:
     sales_sku: Ventas por Producto
     sales_sku_description: Total de ventas por producto de todos los pedidos
+    products_details: Productos
+    products_details_description: Detalle de todos los productos por variante
     sku: Codigo/SKU
     name: Nombre
     quantity: Items Vendidos
     gross_price: Monto sin IVA
+    brand: "Marca"
+    description: "Descripción"
+    taxons: "Categorias"
+    availability: "Disponibilidad"
+    available:
+      'true': "Disponible"
+      'false': "No Disponible"
 
