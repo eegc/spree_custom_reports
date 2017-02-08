@@ -10,7 +10,7 @@ Spree::Admin::ReportsController.class_eval do
 
   def products_details
     respond_to do |format|
-      format.html { @items = Kaminari.paginate_array(Spree::Variant.variant_data.to_a).page(params[:page]).per(10) }
+      format.html { @items = Kaminari.paginate_array(Spree::Variant.variant_data.to_a).page(params[:page]).per(20) }
       format.csv  { send_data Spree::Variant.variant_data_csv, filename: "#{Spree.t(:products_details).parameterize}-#{Date.today}.csv" }
     end
   end

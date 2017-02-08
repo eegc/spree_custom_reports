@@ -24,7 +24,7 @@
           <td><%= link_to item[:sku], edit_admin_product_path(item[:product_id]) %></td>
           <td><%= item[:taxons].join(', ') %></td>
           <td><%= strip_tags(item[:description]) %></td>
-          <td><%= item[:brand] %></td>
+          <td><%= brand(item) %></td>
           <td><%= Spree.t("available.#{product_available?(item)}") %></td>
         </tr>
       <% end %>
