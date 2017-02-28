@@ -1,6 +1,6 @@
 class Spree::Report
 
-  def self.variant_data
+  def self.variants_details
     Spree::Variant.
       select("spree_variants.id, spree_products.id AS product_id, spree_products.name as name, spree_variants.sku, spree_prices.amount as price, spree_variants.deleted_at, spree_products.available_on, spree_products.deleted_at AS product_deleted_at,
         ARRAY_AGG(DISTINCT(spree_taxons.name)) AS taxons, ARRAY_AGG(DISTINCT(spree_properties.name)) AS properties, ARRAY_AGG(DISTINCT(spree_product_properties.value)) AS property_values").
@@ -87,11 +87,11 @@ class Spree::Report
       group('year, month')
   end
 
-  def self.variant_data_csv
+  def self.variants_details_csv
     CSV.generate(col_sep: ';', encoding: 'UTF-8') do |csv|
       csv << [ Spree.t(:sku), Spree.t(:product_name), Spree.t(:price), Spree.t(:taxons), Spree.t(:brand), Spree.t(:availability) ]
 
-      variant_data.each do |item|
+      variants_details.each do |item|
         values =[]
 
         values << item[:sku]
@@ -238,7 +238,7 @@ class Spree::Report
     [item["address1"], item["address2"]].compact.join(' ')
   end
 
-  def availability(item)
+  def self.availability(item)
     Spree.t("available.#{!(item[:available_on].nil? || item[:available_on].future?) && item[:deleted_at].nil? && item[:product_deleted_at].nil?}")
   end
 end
