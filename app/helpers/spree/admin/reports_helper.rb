@@ -2,14 +2,41 @@ module Spree
   module Admin
     module ReportsHelper
 
-      def product_available?(item)
-        (!(item[:available_on].nil? || item[:available_on].future?) && item[:deleted_at].nil? && item[:product_deleted_at].nil?)
+      def availability?(item)
+        Spree::Report.availability(item)
       end
 
       def brand(item)
-        item[:properties].index('brand') ? item[:property_values][ item[:properties].index('brand') ] : ""
+        Spree::Report.brand(item)
       end
 
+      def display_money(amount)
+        Spree::Report.display_money(amount)
+      end
+
+      def full_name(item)
+        Spree::Report.full_name(item)
+      end
+
+      def full_address(item)
+        Spree::Report.full_address(item)
+      end
+
+      def dates
+        {
+          completed_at_gt: params[:completed_at_gt],
+          completed_at_lt: params[:completed_at_lt]
+        }
+      end
+
+      def csv_button
+        button_tag(
+          content_tag(:span, '', class: 'icon icon-download-alt') + ' CSV',
+          :value => 'csv',
+          :name => 'format',
+          class: "btn btn-success"
+        )
+      end
     end
   end
 end
