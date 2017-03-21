@@ -1,0 +1,34 @@
+<% content_for :page_title do %>
+  <%= Spree.t(:sales_for_state) %>
+<% end %>
+
+<% content_for :page_actions do %>
+  <%= link_to_with_icon 'arrow-left', Spree.t(:back_to_resource_list, resource: Spree.t(:report)), spree.admin_reports_url, class: 'btn btn-default' %>
+<% end %>
+
+<div class="well">
+  <%= render :partial => 'between_dates_filter' %>
+</div>
+
+<table class="table table-bordered admin-report" data-hook="sales_sku">
+  <thead>
+    <tr>
+      <th><%= Spree.t(:state_address) %></th>
+      <th><%= Spree.t(:city) %></th>
+      <th><%= Spree.t(:order_quantity) %></th>
+      <th><%= Spree.t(:amount) %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @items.each do |item| %>
+      <tr>
+        <td><%= item[:state] %></td>
+        <td><%= item[:city] %></td>
+        <td><%= item[:order_quantity] %></td>
+        <td><%= display_money(item[:amount]) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @items %>

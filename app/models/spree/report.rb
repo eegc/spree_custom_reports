@@ -43,7 +43,7 @@ class Spree::Report
 
   def self.sales_for_state(dates)
     Spree::Order.
-      select("UPPER(spree_states.name) AS state, UPPER(TRIM(spree_addresses.city)) AS city, COUNT(DISTINCT(spree_orders.id)) AS order_quantity, SUM(spree_orders.total) AS total_amount").
+      select("UPPER(spree_states.name) AS state, UPPER(TRIM(spree_addresses.city)) AS city, COUNT(DISTINCT(spree_orders.id)) AS order_quantity, SUM(spree_orders.total) AS amount").
       joins(:bill_address).
       joins("LEFT JOIN spree_states ON spree_addresses.state_id = spree_states.id").
       complete.
@@ -145,7 +145,7 @@ class Spree::Report
 
   def self.sales_for_state_csv(dates)
     CSV.generate(col_sep: ';', encoding: 'UTF-8') do |csv|
-      csv << [ Spree.t(:state_address), Spree.t(:city), Spree.t(:order_quantity), Spree.t(:total_amount) ]
+      csv << [ Spree.t(:state_address), Spree.t(:city), Spree.t(:order_quantity), Spree.t(:amount) ]
 
       sales_for_state(dates).each do |item|
         values =[]
@@ -153,7 +153,7 @@ class Spree::Report
         values << item[:state]
         values << item[:city]
         values << item[:order_quantity]
-        values << display_money(item[:total_amount])
+        values << display_money(item[:amount])
 
         csv << values
       end
