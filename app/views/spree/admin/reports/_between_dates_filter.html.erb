@@ -1,0 +1,18 @@
+<%= form_tag do %>
+  <div class="form-group date-range-filter">
+    <%= label_tag nil, Spree.t(:date_range) %>
+    <div class="date-range-filter row">
+      <div class="col-md-6">
+        <%= text_field_tag :completed_at_gt, datepicker_field_value(dates[:completed_at_gt]), class: 'datepicker datepicker-from form-control' %>
+      </div>
+      <div class="col-md-6">
+        <%= text_field_tag :completed_at_lt, datepicker_field_value(dates[:completed_at_lt]), class: 'datepicker datepicker-to form-control' %>
+    </div>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <%= button Spree.t(:search), 'search' %>
+    <%= csv_button %>
+  </div>
+<% end %>

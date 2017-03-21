@@ -1,18 +1,47 @@
 es:
   spree:
-    sales_sku: Ventas por Producto
-    sales_sku_description: Total de ventas por producto de todos los pedidos
+    amount: Monto
+    availability: Disponibilidad
+    available:
+      'true': Disponible
+      'false': No Disponible
+    back_to_resource_list: Volver al listado de %{resource}
+    brand: Marca
+    city: Ciudad
+    client_name: Nombre del Cliente
+    client_address: Dirección del Cliente
+    client_email: Email del Cliente
+    client_name: Nombre del Cliente
+    date: Fecha
+    description: Descripción
+    hour: Hora
+    month: Mes
+    order_number: Número de Orden
+    order_quantity: Cantidad de Ordenes
+    price: Precio
     products_details: Productos
     products_details_description: Detalle de todos los productos por variante
-    sku: Codigo/SKU
-    name: Nombre
-    quantity: Items Vendidos
-    gross_price: Monto sin IVA
-    brand: "Marca"
-    description: "Descripción"
-    taxons: "Categorias"
-    availability: "Disponibilidad"
-    available:
-      'true': "Disponible"
-      'false': "No Disponible"
-
+    product_name: Nombre del Producto
+    report: Informe
+    reports: Informes
+    sales_for_month: Ventas por Cliente, Mes y Año
+    sales_for_month_description: Detalle de las Ventas por Cliente, Mes y Año
+    sales_for_product_and_client: Ventas por Producto y Cliente
+    sales_for_product_and_client_description: Detalle de las ventas por Producto y Cliente
+    sales_for_state: Ventas por Región y Ciudad
+    sales_for_state_description: Detalle de las ventas totales por Región y Ciudad
+    sales_items: Items Vendidos
+    sales_sku: Ventas por Producto
+    sales_sku_description: Total de ventas por producto de todos los pedidos
+    sku: SKU
+    state_address: Región
+    stock_details: Detalle de Stock
+    stock_details_description: Detalle del stock actual por variante
+    stock_available: Stock Disponible
+    stock_total: Stock Total
+    taxons: Categorias
+    total_sales_for_months: Ventas totales por Mes y Año
+    total_sales_for_months_description: Detalle de montos de ordenes por Mes y Año
+    variants_details: Detalle de Variantes
+    variants_details_description: Detalle de todos los productos por variante
+    year: Año

@@ -1,5 +1,5 @@
 <% content_for :page_title do %>
-  <%= Spree.t(:sales_sku) %>
+  <%= Spree.t(:sales_for_state) %>
 <% end %>
 
 <% content_for :page_actions do %>
@@ -13,22 +13,22 @@
 <table class="table table-bordered admin-report" data-hook="sales_sku">
   <thead>
     <tr>
-      <th><%= Spree.t(:sku) %></th>
-      <th><%= Spree.t(:name) %></th>
-      <th><%= Spree.t(:sales_items) %></th>
+      <th><%= Spree.t(:state_address) %></th>
+      <th><%= Spree.t(:city) %></th>
+      <th><%= Spree.t(:order_quantity) %></th>
       <th><%= Spree.t(:amount) %></th>
     </tr>
   </thead>
   <tbody>
-    <% @item_sales.each do |item| %>
+    <% @items.each do |item| %>
       <tr>
-        <td><%= link_to item[:sku], edit_admin_product_path(item[:product_id]) %></td>
-        <td><%= item[:name] %></td>
-        <td><%= item[:sales_items] %></td>
+        <td><%= item[:state] %></td>
+        <td><%= item[:city] %></td>
+        <td><%= item[:order_quantity] %></td>
         <td><%= display_money(item[:amount]) %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<%= paginate @item_sales %>
+<%= paginate @items %>
