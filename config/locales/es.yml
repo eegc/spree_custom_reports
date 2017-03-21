@@ -40,6 +40,8 @@ es:
     stock_available: Stock Disponible
     stock_total: Stock Total
     taxons: Categorias
+    total_sales_for_months: Ventas totales por Mes y Año
+    total_sales_for_months_description: Detalle de montos de ordenes por Mes y Año
     variants_details: Detalle de Variantes
     variants_details_description: Detalle de todos los productos por variante
     year: Año

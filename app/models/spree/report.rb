@@ -81,7 +81,7 @@ class Spree::Report
       select("TO_CHAR(completed_at, 'MM') AS month, TO_CHAR(completed_at, 'YYYY') AS year,
               COUNT(spree_orders.id) AS order_quantity,
               SUM(spree_orders.item_count) AS sales_items,
-              SUM(spree_orders.total) AS total").
+              SUM(spree_orders.total) AS amount").
       complete.
       where(completed_at: dates).
       group('year, month')
@@ -208,7 +208,7 @@ class Spree::Report
 
   def self.total_sales_for_months_csv(dates)
     CSV.generate(col_sep: ';', encoding: 'UTF-8') do |csv|
-      csv << [ Spree.t(:year), Spree.t(:month), Spree.t(:order_quantity), Spree.t(:sales_items), Spree.t(:total_amount) ]
+      csv << [ Spree.t(:year), Spree.t(:month), Spree.t(:order_quantity), Spree.t(:sales_items), Spree.t(:amount) ]
 
       total_sales_for_months(dates).each do |item|
         values =[]
@@ -217,7 +217,7 @@ class Spree::Report
         values << item[:month]
         values << item[:order_quantity]
         values << item[:sales_items]
-        values << display_money(item[:total_amount])
+        values << display_money(item[:amount])
 
         csv << values
       end
