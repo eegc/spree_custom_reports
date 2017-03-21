@@ -15,6 +15,7 @@ es:
     date: Fecha
     description: Descripción
     hour: Hora
+    month: Mes
     order_number: Número de Orden
     order_quantity: Cantidad de Ordenes
     price: Precio
@@ -23,6 +24,8 @@ es:
     product_name: Nombre del Producto
     report: Informe
     reports: Informes
+    sales_for_month: Ventas por Cliente, Mes y Año
+    sales_for_month_description: Detalle de las Ventas por Cliente, Mes y Año
     sales_for_product_and_client: Ventas por Producto y Cliente
     sales_for_product_and_client_description: Detalle de las ventas por Producto y Cliente
     sales_for_state: Ventas por Región y Ciudad
@@ -39,3 +42,4 @@ es:
     taxons: Categorias
     variants_details: Detalle de Variantes
     variants_details_description: Detalle de todos los productos por variante
+    year: Año
