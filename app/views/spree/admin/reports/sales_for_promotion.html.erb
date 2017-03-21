@@ -1,0 +1,46 @@
+<% content_for :page_title do %>
+  <%= Spree.t(:sales_for_promotion) %>
+<% end %>
+
+<% content_for :page_actions do %>
+  <%= link_to_with_icon 'arrow-left', Spree.t(:back_to_resource_list, resource: Spree.t(:report)), spree.admin_reports_url, class: 'btn btn-default' %>
+<% end %>
+
+<div class="well">
+  <%= render :partial => 'between_dates_filter' %>
+</div>
+
+<div>
+  <table class="table table-bordered admin-report" data-hook="sales_promotion">
+    <thead>
+      <tr>
+        <th><%= Spree.t(:promotion_name) %></th>
+        <th><%= Spree.t(:code) %></th>
+        <th><%= Spree.t(:order_number) %></th>
+        <th><%= Spree.t(:client_name) %></th>
+        <th><%= Spree.t(:client_email) %></th>
+        <th><%= Spree.t(:date) %></th>
+        <th><%= Spree.t(:hour) %></th>
+        <th><%= Spree.t(:amount) %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @items.each do |item| %>
+        <tr>
+          <td><%= item[:name] %></td>
+          <td><%= item[:code] %></td>
+          <td><%= item[:number] %></td>
+          <td><%= full_name(item) %></td>
+          <td><%= item[:email] %></td>
+          <td><%= item.completed_at.strftime("%d-%m-%Y") %></td>
+          <td><%= item.completed_at.strftime("%H:%M") %></td>
+          <td><%= display_money(item[:amount]) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div>
+  <%= paginate @items %>
+</div>
