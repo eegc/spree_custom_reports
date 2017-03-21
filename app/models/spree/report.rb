@@ -128,7 +128,7 @@ class Spree::Report
 
   def self.sales_sku_csv(dates)
     CSV.generate(col_sep: ';', encoding: 'UTF-8') do |csv|
-      csv << [ Spree.t(:sku), Spree.t(:product_name), Spree.t(:sales_items), Spree.t(:total_amount) ]
+      csv << [ Spree.t(:sku), Spree.t(:product_name), Spree.t(:sales_items), Spree.t(:amount) ]
 
       sales_sku(dates).each do |item|
         values =[]

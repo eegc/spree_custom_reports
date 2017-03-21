@@ -10,7 +10,6 @@ es:
     client_name: Nombre del Cliente
     description: Descripción
     client_email: Email del Cliente
-    gross_price: Monto sin IVA
     order_number: Número de Orden
     order_quantity: Cantidad de Ordenes
     price: Precio
@@ -27,7 +26,7 @@ es:
     stock_available: Stock Disponible
     stock_total: Stock Total
     taxons: Categorias
-    total_amount: Monto total
+    total_amount: Monto
     variants_details: Detalle de Variantes
     variants_details_description: Detalle de todos los productos por variante
 
