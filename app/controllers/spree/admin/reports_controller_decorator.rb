@@ -51,6 +51,13 @@ Spree::Admin::ReportsController.class_eval do
     end
   end
 
+  def sales_for_promotion
+    respond_to do |format|
+      format.html { @items = Kaminari.paginate_array(Spree::Report.sales_for_promotion(@dates).to_a).page(params[:page]).per(20) }
+      format.csv  { send_data Spree::Report.sales_for_promotion_csv(@dates), filename: "#{Spree.t(:sales_for_promotion).parameterize}-#{Date.today}.csv" }
+    end
+  end
+
   private
 
   def add_custom_reports
@@ -61,6 +68,7 @@ Spree::Admin::ReportsController.class_eval do
     Spree::Admin::ReportsController.add_available_report!(:sales_for_product_and_client)
     Spree::Admin::ReportsController.add_available_report!(:sales_for_month)
     Spree::Admin::ReportsController.add_available_report!(:total_sales_for_months)
+    Spree::Admin::ReportsController.add_available_report!(:sales_for_promotion)
   end
 
   def set_dates

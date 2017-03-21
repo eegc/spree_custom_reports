@@ -12,6 +12,7 @@ es:
     client_address: Dirección del Cliente
     client_email: Email del Cliente
     client_name: Nombre del Cliente
+    code: Código
     date: Fecha
     description: Descripción
     hour: Hora
@@ -22,12 +23,15 @@ es:
     products_details: Productos
     products_details_description: Detalle de todos los productos por variante
     product_name: Nombre del Producto
+    promotion_name: Nombre de la Promoción
     report: Informe
     reports: Informes
     sales_for_month: Ventas por Cliente, Mes y Año
     sales_for_month_description: Detalle de las Ventas por Cliente, Mes y Año
     sales_for_product_and_client: Ventas por Producto y Cliente
     sales_for_product_and_client_description: Detalle de las ventas por Producto y Cliente
+    sales_for_promotion: Ventas por Promoción
+    sales_for_promotion_description: Detalle de las ventas por promociones
     sales_for_state: Ventas por Región y Ciudad
     sales_for_state_description: Detalle de las ventas totales por Región y Ciudad
     sales_items: Items Vendidos

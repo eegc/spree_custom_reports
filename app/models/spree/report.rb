@@ -87,6 +87,19 @@ class Spree::Report
       group('year, month')
   end
 
+  def self.sales_for_promotion(dates)
+    Spree::Order.
+      select("spree_promotions.name, spree_promotions.code, spree_orders.number, spree_addresses.firstname, spree_addresses.lastname, spree_orders.email, spree_orders.completed_at, spree_orders.total").
+      joins(promotions: :promotion_rules).
+      joins("INNER JOIN spree_products_promotion_rules ON spree_promotion_rules.id = spree_products_promotion_rules.promotion_rule_id").
+      joins("INNER JOIN spree_products ON spree_products.id = spree_products_promotion_rules.product_id").
+      joins(:bill_address).
+      complete.
+      where(completed_at: dates).
+      group("spree_orders.id, spree_promotions.name, spree_promotions.code, spree_orders.number, spree_addresses.firstname, spree_addresses.lastname, spree_orders.email, spree_orders.completed_at, spree_orders.total").
+      order("spree_orders.total DESC")
+  end
+
   def self.variants_details_csv
     CSV.generate(col_sep: ';', encoding: 'UTF-8') do |csv|
       csv << [ Spree.t(:sku), Spree.t(:product_name), Spree.t(:price), Spree.t(:taxons), Spree.t(:brand), Spree.t(:availability) ]
@@ -217,6 +230,27 @@ class Spree::Report
         values << item[:month]
         values << item[:order_quantity]
         values << item[:sales_items]
+        values << display_money(item[:amount])
+
+        csv << values
+      end
+    end
+  end
+
+  def self.sales_for_promotion_csv(dates)
+    CSV.generate(col_sep: ';', encoding: 'UTF-8') do |csv|
+      csv << [Spree.t(:promotion_name), Spree.t(:code), Spree.t(:order_number), Spree.t(:client_name), Spree.t(:client_email), Spree.t(:date), Spree.t(:hour), Spree.t(:amount)]
+
+      sales_for_promotion(dates).each do |item|
+        values = []
+
+        values << item[:name]
+        values << item[:code]
+        values << item[:number]
+        values << full_name(item)
+        values << item[:client_email]
+        values << item.completed_at.strftime("%d-%m-%Y")
+        values << item.completed_at.strftime("%H:%M")
         values << display_money(item[:amount])
 
         csv << values
