@@ -14,10 +14,10 @@ Spree::Core::Engine.routes.draw do
         post :sales_for_product_and_client
         get :sales_for_month
         post :sales_for_month
-        get :sales_for_promotion
-        post :sales_for_promotion
         get :total_sales_for_months
         post :total_sales_for_months
+        get :sales_for_promotion
+        post :sales_for_promotion
       end
     end
   end
