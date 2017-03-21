@@ -54,16 +54,15 @@ class Spree::Report
   def self.sales_for_product_and_client(dates)
     Spree::LineItem.
       select("spree_line_items.id, spree_variants.id, spree_variants.sku, spree_products.id AS product_id, spree_products.name, spree_line_items.quantity AS sales_items, spree_line_items.price,
-        spree_addresses.firstname, spree_addresses.lastname, spree_orders.email, spree_addresses.address1, spree_addresses.address2, spree_states.name AS state_address,
+        spree_addresses.firstname, spree_addresses.lastname, spree_orders.email, spree_orders.completed_at, spree_addresses.address1, spree_addresses.address2, spree_states.name AS state_address,
         ARRAY_AGG(DISTINCT(spree_taxons.name)) AS taxons, ARRAY_AGG(DISTINCT(spree_properties.name)) AS properties, ARRAY_AGG(DISTINCT(spree_product_properties.value)) AS property_values").
       joins(:variant, :product, order: [:payments, :bill_address]).
       joins("LEFT JOIN spree_states ON spree_addresses.state_id = spree_states.id").
       joins("LEFT JOIN spree_products_taxons ON spree_products_taxons.product_id = spree_products.id LEFT JOIN spree_taxons ON spree_taxons.id = spree_products_taxons.taxon_id").
       joins("LEFT JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id LEFT JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id").
       where(spree_orders: { completed_at: dates }).
-      where(spree_payments: { state: 'completed' }).
-      group("spree_line_items.id, spree_variants.id, spree_products.id, spree_variants.sku, spree_products.name, spree_line_items.quantity, spree_line_items.price,
-        spree_addresses.firstname, spree_addresses.lastname, spree_addresses.address1, spree_addresses.address2, state_address")
+      group("spree_line_items.id, spree_variants.id, spree_variants.sku, spree_products.id, spree_products.name, sales_items, spree_line_items.price,
+        spree_addresses.firstname, spree_addresses.lastname, spree_orders.email, spree_orders.completed_at, spree_addresses.address1, spree_addresses.address2, state_address")
   end
 
   def self.sales_for_month(dates)
@@ -164,7 +163,7 @@ class Spree::Report
     CSV.generate(col_sep: ';', encoding: 'UTF-8') do |csv|
       csv << [
         Spree.t(:sku), Spree.t(:brand), Spree.t(:taxons), Spree.t(:product_name), Spree.t(:sales_items), Spree.t(:price),
-        Spree.t(:client_name), Spree.t(:email), Spree.t(:address), Spree.t(:state_address)
+        Spree.t(:client_name), Spree.t(:client_email), Spree.t(:client_address), Spree.t(:state_address),  Spree.t(:date), Spree.t(:hour)
        ]
 
       sales_for_product_and_client(dates).each do |item|
@@ -180,6 +179,8 @@ class Spree::Report
         values << item[:email]
         values << full_address(item)
         values << item[:state_address]
+        values << item[:completed_at].strftime("%d-%m-%Y")
+        values << item[:completed_at].strftime("%H:%M")
 
         csv << values
       end
