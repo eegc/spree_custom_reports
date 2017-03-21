@@ -1,4 +1,5 @@
 class Spree::Report
+  require 'csv'
 
   def self.variants_details
     Spree::Variant.
@@ -33,7 +34,7 @@ class Spree::Report
 
   def self.sales_sku(dates)
     Spree::Variant.
-      select("spree_variants.id, spree_products.id AS product_id, spree_variants.sku, spree_products.name, SUM(spree_line_items.quantity) AS sales_items, SUM(spree_line_items.price) AS total_amount").
+      select("spree_variants.id, spree_products.id AS product_id, spree_variants.sku, spree_products.name, SUM(spree_line_items.quantity) AS sales_items, SUM(spree_line_items.price) AS amount").
       joins(:product).
       complete_order.
       where(spree_orders: { completed_at: dates }).
@@ -135,7 +136,7 @@ class Spree::Report
         values << item[:sku]
         values << item[:name]
         values << item[:sales_items]
-        values << display_money(item[:total_amount])
+        values << display_money(item[:amount])
 
         csv << values
       end
