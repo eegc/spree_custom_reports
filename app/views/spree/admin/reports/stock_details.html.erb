@@ -1,0 +1,39 @@
+<% content_for :page_title do %>
+  <%= Spree.t(:stock_details) %>
+<% end %>
+
+<% content_for :page_actions do %>
+  <%= link_to_with_icon 'arrow-left', Spree.t(:back_to_resource_list, resource: Spree.t(:report)), spree.admin_reports_url, class: 'btn btn-default' %>
+  <%= link_to("Export Report", stock_details_admin_reports_path(format: :csv), class: "btn btn-success",) %>
+<% end %>
+
+<div>
+  <table class="table table-bordered admin-report" data-hook="sales_sku">
+    <thead>
+      <tr>
+        <th><%= Spree.t(:sku) %></th>
+        <th><%= Spree.t(:brand) %></th>
+        <th><%= Spree.t(:name) %></th>
+        <th><%= Spree.t(:stock_available) %></th>
+        <th><%= Spree.t(:availability) %></th>
+        <th><%= Spree.t(:stock_total) %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @items.each do |item| %>
+        <tr>
+          <td><%= link_to item[:sku], edit_admin_product_path(item[:product_id]) %></td>
+          <td><%= brand(item) %></td>
+          <td><%= item[:name] %></td>
+          <td><%= item[:stock] %></td>
+          <td><%= Spree.t("available.#{availability?(item)}") %></td>
+          <td><%= (item[:total] + item[:stock]) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div>
+  <%= paginate @items %>
+</div>
