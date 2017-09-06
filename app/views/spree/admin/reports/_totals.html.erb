@@ -1,0 +1,17 @@
+<div class="container">
+  <div class="col-md-6">
+    <dl class="dl-horizontal">
+      <dt> Monto Total:  </dt>
+      <dd> <%= display_money(@totals[:total_amount]) %> </dd>
+    </dl>
+  </div>
+
+  <div class="col-md-6">
+    <dl class="dl-horizontal">
+      <dt> Total Ordenes: </dt>
+      <dd> <%= @totals[:orders] %> </dd>
+      <dt> Total Items: </dt>
+      <dd> <%= @totals[:items] %> </dd>
+    </dl>
+  </div>
+</div>

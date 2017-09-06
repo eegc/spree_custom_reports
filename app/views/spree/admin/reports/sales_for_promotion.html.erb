@@ -14,14 +14,14 @@
   <table class="table table-bordered admin-report" data-hook="sales_promotion">
     <thead>
       <tr>
-        <th><%= Spree.t(:promotion_name) %></th>
+        <th><%= Spree.t(:campaign_name) %></th>
         <th><%= Spree.t(:code) %></th>
-        <th><%= Spree.t(:order_number) %></th>
+        <th><%= Spree.t(:num_orders) %></th>
         <th><%= Spree.t(:client_name) %></th>
-        <th><%= Spree.t(:client_email) %></th>
+        <th><%= Spree.t(:email) %></th>
         <th><%= Spree.t(:date) %></th>
         <th><%= Spree.t(:hour) %></th>
-        <th><%= Spree.t(:amount) %></th>
+        <th><%= Spree.t(:total) %></th>
       </tr>
     </thead>
     <tbody>
@@ -29,12 +29,12 @@
         <tr>
           <td><%= item[:name] %></td>
           <td><%= item[:code] %></td>
-          <td><%= item[:number] %></td>
+          <td><%= link_to(item[:number], edit_admin_order_path(item[:number])) %></td>
           <td><%= full_name(item) %></td>
           <td><%= item[:email] %></td>
           <td><%= item.completed_at.strftime("%d-%m-%Y") %></td>
           <td><%= item.completed_at.strftime("%H:%M") %></td>
-          <td><%= display_money(item[:amount]) %></td>
+          <td><%= display_money(item[:total]) %></td>
         </tr>
       <% end %>
     </tbody>

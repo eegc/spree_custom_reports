@@ -10,25 +10,29 @@
   <%= render :partial => 'between_dates_filter' %>
 </div>
 
+<div class="well">
+  <%= render :partial => 'totals' %>
+</div>
+
 <table class="table table-bordered admin-report" data-hook="sales_sku">
   <thead>
     <tr>
       <th><%= Spree.t(:sku) %></th>
       <th><%= Spree.t(:name) %></th>
       <th><%= Spree.t(:sales_items) %></th>
-      <th><%= Spree.t(:amount) %></th>
+      <th><%= Spree.t(:price) %></th>
     </tr>
   </thead>
   <tbody>
-    <% @item_sales.each do |item| %>
+    <% @items.each do |item| %>
       <tr>
         <td><%= link_to item[:sku], edit_admin_product_path(item[:product_id]) %></td>
         <td><%= item[:name] %></td>
-        <td><%= item[:sales_items] %></td>
-        <td><%= display_money(item[:amount]) %></td>
+        <td><%= item[:items_quant] %></td>
+        <td><%= display_price(item[:total]) %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<%= paginate @item_sales %>
+<%= paginate @items %>

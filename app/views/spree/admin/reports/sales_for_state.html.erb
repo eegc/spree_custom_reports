@@ -10,13 +10,17 @@
   <%= render :partial => 'between_dates_filter' %>
 </div>
 
+<div class="well">
+  <%= render :partial => 'totals' %>
+</div>
+
 <table class="table table-bordered admin-report" data-hook="sales_sku">
   <thead>
     <tr>
       <th><%= Spree.t(:state_address) %></th>
       <th><%= Spree.t(:city) %></th>
-      <th><%= Spree.t(:order_quantity) %></th>
-      <th><%= Spree.t(:amount) %></th>
+      <th><%= Spree.t(:quantity) %></th>
+      <th><%= Spree.t(:price) %></th>
     </tr>
   </thead>
   <tbody>
@@ -24,8 +28,8 @@
       <tr>
         <td><%= item[:state] %></td>
         <td><%= item[:city] %></td>
-        <td><%= item[:order_quantity] %></td>
-        <td><%= display_money(item[:amount]) %></td>
+        <td><%= item[:orders_quant] %></td>
+        <td><%= display_price(item[:total]) %></td>
       </tr>
     <% end %>
   </tbody>

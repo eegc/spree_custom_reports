@@ -10,16 +10,20 @@
   <%= render :partial => 'between_dates_filter' %>
 </div>
 
+<div class="well">
+  <%= render :partial => 'totals' %>
+</div>
+
 <div>
   <table class="table table-bordered admin-report" data-hook="sales_sku">
     <thead>
       <tr>
         <th><%= Spree.t(:year) %></th>
         <th><%= Spree.t(:month) %></th>
-        <th><%= Spree.t(:order_number) %></th>
-        <th><%= Spree.t(:client_email) %></th>
+        <th><%= Spree.t(:orders) %></th>
+        <th><%= Spree.t(:users) %></th>
         <th><%= Spree.t(:sales_items) %></th>
-        <th><%= Spree.t(:amount) %></th>
+        <th><%= Spree.t(:price) %></th>
       </tr>
     </thead>
     <tbody>
@@ -27,10 +31,10 @@
         <tr>
           <td><%= item[:year] %></td>
           <td><%= item[:month] %></td>
-          <td><%= item[:order_number] %></td>
-          <td><%= item[:client_email] %></td>
-          <td><%= item[:sales_items] %></td>
-          <td><%= display_money(item[:amount]) %></td>
+          <td><%= link_to(item[:number], edit_admin_order_path(item[:number])) %></td>
+          <td><%= item[:email] %></td>
+          <td><%= item[:items_quant] %></td>
+          <td><%= display_price(item[:total]) %></td>
         </tr>
       <% end %>
     </tbody>
