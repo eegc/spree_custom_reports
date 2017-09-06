@@ -1,5 +1,5 @@
 <% content_for :page_title do %>
-  <%= Spree.t(:sales_for_product_and_client) %>
+  <%= Spree.t(:sales_for_client) %>
 <% end %>
 
 <% content_for :page_actions do %>
@@ -10,39 +10,45 @@
   <%= render :partial => 'between_dates_filter' %>
 </div>
 
+<div class="well">
+  <%= render :partial => 'totals' %>
+</div>
+
 <div>
   <table class="table table-bordered admin-report" data-hook="sales_sku">
     <thead>
       <tr>
         <th><%= Spree.t(:sku) %></th>
+        <th><%= Spree.t(:name) %></th>
         <th><%= Spree.t(:brand) %></th>
         <th><%= Spree.t(:taxons) %></th>
-        <th><%= Spree.t(:product_name) %></th>
-        <th><%= Spree.t(:sales_items) %></th>
-        <th><%= Spree.t(:price) %></th>
+        <th><%= Spree.t(:quantity) %></th>
+        <th><%= Spree.t(:unit_price) %></th>
+        <th><%= Spree.t(:total) %></th>
         <th><%= Spree.t(:email) %></th>
         <th><%= Spree.t(:client_name) %></th>
-        <th><%= Spree.t(:client_address) %></th>
+        <th><%= Spree.t(:run) %></th>
+        <th><%= Spree.t(:address) %></th>
         <th><%= Spree.t(:state_address) %></th>
-        <th><%= Spree.t(:date) %></th>
-        <th><%= Spree.t(:hour) %></th>
+        <th><%= Spree.t(:order) %></th>
       </tr>
     </thead>
     <tbody>
       <% @items.each do |item| %>
         <tr>
           <td><%= link_to item[:sku], edit_admin_product_path(item[:product_id]) %></td>
+          <td><%= strip_tags(item[:name]) %></td>
           <td><%= brand(item) %></td>
           <td><%= item[:taxons].join(', ') %></td>
-          <td><%= strip_tags(item[:name]) %></td>
-          <td><%= item[:sales_items] %></td>
-          <td><%= display_money(item[:price]) %></td>
+          <td><%= item[:quantity] %></td>
+          <td><%= display_money(item[:unit_price]) %></td>
+          <td><%= display_money(item[:total]) %></td>
           <td><%= item[:email] %></td>
           <td><%= full_name(item) %></td>
+          <td><%= run_format(item) %></td>
           <td><%= full_address(item) %></td>
           <td><%= item[:state_address] %></td>
-          <td><%= item[:completed_at].strftime("%d-%m-%Y") %></td>
-          <td><%= item[:completed_at].strftime("%H:%M") %></td>
+          <td><%= item[:order_number] %></td>
         </tr>
       <% end %>
     </tbody>

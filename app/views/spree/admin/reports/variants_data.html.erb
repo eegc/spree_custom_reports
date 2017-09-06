@@ -1,10 +1,10 @@
 <% content_for :page_title do %>
-  <%= Spree.t(:variants_details) %>
+  <%= Spree.t(:variants_data) %>
 <% end %>
 
 <% content_for :page_actions do %>
   <%= link_to_with_icon 'arrow-left', Spree.t(:back_to_resource_list, resource: Spree.t(:report)), spree.admin_reports_url, class: 'btn btn-default' %>
-  <%= link_to("Export Report", variants_details_admin_reports_path(format: :csv), class: "btn btn-success",) %>
+  <%= link_to("Export Report", variants_data_admin_reports_path(format: :csv), class: "btn btn-success",) %>
 <% end %>
 
 <div>
@@ -12,22 +12,22 @@
     <thead>
       <tr>
         <th><%= Spree.t(:sku) %></th>
-        <th><%= Spree.t(:product_name) %></th>
-        <th><%= Spree.t(:price) %></th>
         <th><%= Spree.t(:taxons) %></th>
+        <th><%= Spree.t(:description) %></th>
         <th><%= Spree.t(:brand) %></th>
         <th><%= Spree.t(:availability) %></th>
+        <th><%= Spree.t(:price) %></th>
       </tr>
     </thead>
     <tbody>
       <% @items.each do |item| %>
         <tr>
           <td><%= link_to item[:sku], edit_admin_product_path(item[:product_id]) %></td>
-          <td><%= item[:name] %></td>
-          <td><%= display_money(item[:price]) %></td>
           <td><%= item[:taxons].join(', ') %></td>
+          <td><%= item[:name] %></td>
           <td><%= brand(item) %></td>
-          <td><%= availability?(item) %></td>
+          <td><%= Spree.t("available.#{product_available?(item)}") %></td>
+          <td><%= display_money(item[:price]) %></td>
         </tr>
       <% end %>
     </tbody>

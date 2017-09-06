@@ -11,12 +11,9 @@
   <table class="table table-bordered admin-report" data-hook="sales_sku">
     <thead>
       <tr>
-        <th><%= Spree.t(:sku) %></th>
-        <th><%= Spree.t(:brand) %></th>
-        <th><%= Spree.t(:name) %></th>
-        <th><%= Spree.t(:stock_available) %></th>
-        <th><%= Spree.t(:availability) %></th>
-        <th><%= Spree.t(:stock_total) %></th>
+        <% Spree::Report::StockDetail.headers.each do |header| %>
+          <th><%= header %></th>
+        <% end %>
       </tr>
     </thead>
     <tbody>
@@ -25,9 +22,9 @@
           <td><%= link_to item[:sku], edit_admin_product_path(item[:product_id]) %></td>
           <td><%= brand(item) %></td>
           <td><%= item[:name] %></td>
+          <td><%= item[:location_name] %></td>
           <td><%= item[:stock] %></td>
-          <td><%= Spree.t("available.#{availability?(item)}") %></td>
-          <td><%= (item[:total] + item[:stock]) %></td>
+          <td><%= Spree.t("available.#{product_available?(item)}") %></td>
         </tr>
       <% end %>
     </tbody>

@@ -1,5 +1,5 @@
 <% content_for :page_title do %>
-  <%= Spree.t(:sales_for_month) %>
+  <%= Spree.t(:sales_and_stock) %>
 <% end %>
 
 <% content_for :page_actions do %>
@@ -14,21 +14,23 @@
   <table class="table table-bordered admin-report" data-hook="sales_sku">
     <thead>
       <tr>
-        <th><%= Spree.t(:year) %></th>
-        <th><%= Spree.t(:month) %></th>
-        <th><%= Spree.t(:order_quantity) %></th>
-        <th><%= Spree.t(:sales_items) %></th>
-        <th><%= Spree.t(:amount) %></th>
+        <th><%= Spree.t(:sku) %></th>
+        <th><%= Spree.t(:description) %></th>
+        <th><%= Spree.t(:brand) %></th>
+        <th><%= Spree.t(:stock) %></th>
+        <th><%= Spree.t(:price) %></th>
+        <th><%= Spree.t(:taxons) %></th>
       </tr>
     </thead>
     <tbody>
       <% @items.each do |item| %>
         <tr>
-          <td><%= item[:year] %></td>
-          <td><%= item[:month] %></td>
-          <td><%= item[:order_quantity] %></td>
-          <td><%= item[:sales_items] %></td>
+          <td><%= link_to item[:sku], edit_admin_product_path(item[:product_id]) %></td>
+          <td><%= item[:name] %></td>
+          <td><%= brand(item) %></td>
+          <td><%= item[:stock] %></td>
           <td><%= display_money(item[:amount]) %></td>
+          <td><%= item[:taxons].join(', ') %></td>
         </tr>
       <% end %>
     </tbody>
