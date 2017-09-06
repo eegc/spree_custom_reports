@@ -1,92 +1,185 @@
 Spree::Admin::ReportsController.class_eval do
   before_action :add_custom_reports, only: :index
-  before_action :set_dates, only: [ :sales_sku, :sales_for_state, :sales_for_product_and_client, :sales_for_month, :total_sales_for_months ]
+  before_action :set_dates, only: [:sales_total, :sales_sku, :sales_click_go, :sales_for_state, :sales_for_client, :sales_and_stock, :sales_for_month, :sales_for_promotion]
 
-  def variants_details
+  def sales_total
     respond_to do |format|
-      format.html { @items = Kaminari.paginate_array(Spree::Report.variants_details.to_a).page(params[:page]).per(20) }
-      format.csv  { send_data Spree::Report.variants_details_csv, filename: "#{Spree.t(:variants_details).parameterize}-#{Date.today}.csv" }
+      format.html { @items = Spree::Report::SalesTotal.compute(@dates) }
+      format.csv  { send_file(report_klass: Spree::Report::SalesTotal, dates: @dates) }
     end
-  end
 
-  def stock_details
-    respond_to do |format|
-      format.html { @items = Kaminari.paginate_array(Spree::Report.stock_details.to_a).page(params[:page]).per(20) }
-      format.csv  { send_data Spree::Report.stock_details_csv, filename: "#{Spree.t(:stock_details).parameterize}-#{Date.today}.csv" }
-    end
   end
 
   def sales_sku
     respond_to do |format|
-      format.html { @item_sales = Kaminari.paginate_array(Spree::Report.sales_sku(@dates).to_a).page(params[:page]).per(20) }
-      format.csv  { send_data Spree::Report.sales_sku_csv(@dates), filename: "#{Spree.t(:sales_sku).parameterize}-#{Date.today}.csv" }
-    end
-  end
+      format.html do
+        @items = Spree::Report::SalesSku.compute(@dates)
 
-  def sales_for_state
-    respond_to do |format|
-      format.html { @items = Kaminari.paginate_array(Spree::Report.sales_for_state(@dates).to_a).page(params[:page]).per(20) }
-      format.csv  { send_data Spree::Report.sales_for_state_csv(@dates), filename: "#{Spree.t(:sales_for_state).parameterize}-#{Date.today}.csv" }
-    end
-  end
+        @totals = {
+          total_amount: @items.inject(0){ |sum,i| sum + i[:total] },
+          items: @items.inject(0){ |sum,i| sum + i[:items_quant] },
+          orders: @items.flat_map{ |i| i.order_ids }.uniq.count
+        }
 
-  def sales_for_product_and_client
-    respond_to do |format|
-      format.html { @items = Kaminari.paginate_array(Spree::Report.sales_for_product_and_client(@dates).to_a).page(params[:page]).per(20) }
-      format.csv  { send_data Spree::Report.sales_for_product_and_client_csv(@dates), filename: "#{Spree.t(:sales_for_product_and_client).parameterize}-#{Date.today}.csv" }
+        @items = Kaminari.paginate_array(@items.to_a).page(params[:page]).per(20)
+      end
+
+      format.csv  { send_file(report_klass: Spree::Report::SalesSku, dates: @dates) }
     end
   end
 
   def sales_for_month
     respond_to do |format|
-      format.html { @items = Kaminari.paginate_array(Spree::Report.sales_for_month(@dates).to_a).page(params[:page]).per(20) }
-      format.csv  { send_data Spree::Report.sales_for_month_csv(@dates), filename: "#{Spree.t(:sales_for_month).parameterize}-#{Date.today}.csv" }
+      format.html do
+        @items = Spree::Report::SalesForMonth.compute(@dates)
+
+        @totals = {
+          total_amount: @items.inject(0){ |sum,i| sum + i[:total] },
+          items: @items.inject(0){ |sum,i| sum + i[:items_quant] },
+          orders: @items.length
+        }
+
+        @items = Kaminari.paginate_array(@items.to_a).page(params[:page]).per(20)
+      end
+
+      format.csv  { send_file(report_klass: Spree::Report::SalesForMonth, dates: @dates) }
     end
   end
 
-  def total_sales_for_months
+  def sales_click_go
     respond_to do |format|
-      format.html { @items = Kaminari.paginate_array(Spree::Report.total_sales_for_months(@dates).to_a).page(params[:page]).per(20) }
-      format.csv  { send_data Spree::Report.total_sales_for_months_csv(@dates), filename: "#{Spree.t(:total_sales_for_months).parameterize}-#{Date.today}.csv" }
+      format.html do
+        @items = Spree::Report::SalesClickGo.compute(@dates)
+
+        @totals = {
+          total_amount: @items.inject(0){ |sum,i| sum + i[:total] },
+          items: @items.inject(0){ |sum,i| sum + i[:quantity] },
+          orders: @items.flat_map{ |i| i.number }.uniq.count
+        }
+
+        @items = Kaminari.paginate_array(@items.to_a).page(params[:page]).per(20)
+      end
+
+      format.csv  { send_file(report_klass: Spree::Report::SalesClickGo, dates: @dates) }
     end
   end
+
+  def sales_for_state
+    respond_to do |format|
+      format.html do
+        @items = Spree::Report::SalesForState.compute(@dates)
+
+        @totals = {
+          total_amount: @items.inject(0){ |sum,i| sum + i[:total] },
+          items: @items.inject(0){ |sum,i| sum + i[:items_quant] },
+          orders: @items.inject(0){ |sum,i| sum + i[:orders_quant] }
+        }
+
+        @items = Kaminari.paginate_array(@items.to_a).page(params[:page]).per(20)
+      end
+
+      format.csv  { send_file(report_klass: Spree::Report::SalesForState, dates: @dates) }
+    end
+  end
+
+  def sales_for_client
+    respond_to do |format|
+
+      format.html do
+        @items = Spree::Report::SalesForClient.compute(@dates)
+
+        @totals = {
+          total_amount: @items.inject(0){ |sum,i| sum + (i[:total])},
+          items: @items.inject(0){ |sum,i| sum + i[:quantity] },
+          orders: @items.flat_map{ |i| i.order_ids }.uniq.count
+        }
+
+        @items = Kaminari.paginate_array(@items.to_a).page(params[:page]).per(20)
+      end
+
+      format.csv  { send_file(report_klass: Spree::Report::SalesForClient, dates: @dates) }
+    end
+  end
+
+  def sales_and_stock
+    respond_to do |format|
+      format.html { @items = Kaminari.paginate_array(Spree::Report::SalesAndStock.compute(@dates).to_a).page(params[:page]).per(20) }
+      format.csv  { send_file(report_klass: Spree::Report::SalesAndStock, dates: @dates) }
+    end
+  end
+
 
   def sales_for_promotion
     respond_to do |format|
-      format.html { @items = Kaminari.paginate_array(Spree::Report.sales_for_promotion(@dates).to_a).page(params[:page]).per(20) }
-      format.csv  { send_data Spree::Report.sales_for_promotion_csv(@dates), filename: "#{Spree.t(:sales_for_promotion).parameterize}-#{Date.today}.csv" }
+      format.html { @items = Kaminari.paginate_array(Spree::Report::SalesForPromotion.compute(@dates).to_a).page(params[:page]).per(20) }
+      format.csv  { send_file(report_klass: Spree::Report::SalesForPromotion, dates: @dates) }
+    end
+  end
+
+  def variants_data
+    respond_to do |format|
+      format.html { @items = Kaminari.paginate_array(Spree::Report::VariantData.compute.to_a).page(params[:page]).per(20) }
+      format.csv  { send_file(report_klass: Spree::Report::VariantData, dates: nil) }
+    end
+  end
+
+  def stock_details
+    respond_to do |format|
+      format.html { @items = Kaminari.paginate_array(Spree::Report::StockDetail.compute.to_a).page(params[:page]).per(20) }
+      format.csv  { send_file(report_klass: Spree::Report::StockDetail, dates: nil) }
     end
   end
 
   private
 
   def add_custom_reports
-    Spree::Admin::ReportsController.add_available_report!(:variants_details)
-    Spree::Admin::ReportsController.add_available_report!(:stock_details)
     Spree::Admin::ReportsController.add_available_report!(:sales_sku)
-    Spree::Admin::ReportsController.add_available_report!(:sales_for_state)
-    Spree::Admin::ReportsController.add_available_report!(:sales_for_product_and_client)
     Spree::Admin::ReportsController.add_available_report!(:sales_for_month)
-    Spree::Admin::ReportsController.add_available_report!(:total_sales_for_months)
+    Spree::Admin::ReportsController.add_available_report!(:sales_for_state)
+    Spree::Admin::ReportsController.add_available_report!(:sales_for_client)
+    Spree::Admin::ReportsController.add_available_report!(:sales_and_stock)
     Spree::Admin::ReportsController.add_available_report!(:sales_for_promotion)
+    Spree::Admin::ReportsController.add_available_report!(:variants_data)
+    Spree::Admin::ReportsController.add_available_report!(:stock_details)
+    Spree::Admin::ReportsController.add_available_report!(:sales_click_go)
   end
 
   def set_dates
     if params[:completed_at_gt].blank?
       params[:completed_at_gt] = Time.zone.now.beginning_of_month
     else
-      params[:completed_at_gt] = Time.zone.parse(params[:completed_at_gt]).beginning_of_day rescue Time.zone.now.beginning_of_month
+      params[:completed_at_gt] = begin
+                                   Time.zone.parse(params[:completed_at_gt]).beginning_of_day
+                                 rescue
+                                   Time.zone.now.beginning_of_month
+                                 end
     end
 
     if params[:completed_at_lt].blank?
       params[:completed_at_lt] = Time.zone.now.end_of_month
     else
-      params[:completed_at_lt] = Time.zone.parse(params[:completed_at_lt]).beginning_of_day rescue Time.zone.now.end_of_month
+      params[:completed_at_lt] = begin
+                                   Time.zone.parse(params[:completed_at_lt]).end_of_day
+                                 rescue
+                                   Time.zone.now.end_of_month
+                                 end
     end
 
     gt = params[:completed_at_gt]
     lt = params[:completed_at_lt]
 
     @dates = (gt..lt)
+  end
+
+  private
+
+  def send_file(report_klass:, dates:)
+    data = dates.nil? ? report_klass.send('to_csv') : report_klass.send('to_csv', @dates)
+
+    send_data(
+      Iconv.conv('iso-8859-1//TRANSLIT//IGNORE', 'utf-8', data),
+      type: 'text/csv; charset=iso-8859-1; header=present',
+      filename: "#{Spree.t(action).parameterize}-#{Date.today}.csv"
+      )
   end
 end
