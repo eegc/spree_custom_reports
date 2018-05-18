@@ -23,8 +23,11 @@
       <th><%= Spree.t(:shipment) %></th>
       <th>
         <span data-toggle="tooltip" data-placement="top" title="TOTAL + ENVÍO">
-          <%= Spree.t(:order_total) %></th>
+          <%= Spree.t(:order_total) %>
         </span>
+      </th>
+      <th>Payment State</th>
+
     </tr>
   </thead>
   <tbody>
@@ -35,6 +38,7 @@
         <td><%= display_money(item[:total]) %></td>
         <td><%= display_money(item[:shipment_total]) %></td>
         <td><%= display_money(item[:order_total]) %></td>
+        <td><%= item[:payment_state] %></td>
       </tr>
     <% end %>
   </tbody>

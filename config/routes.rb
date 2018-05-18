@@ -18,6 +18,15 @@ Spree::Core::Engine.routes.draw do
         post :total_sales_for_months
         get :sales_for_promotion
         post :sales_for_promotion
+
+        get :sales_for_client
+        post :sales_for_client
+        get :sales_and_stock
+        post :sales_and_stock
+        get  :variants_data
+        post :variants_data
+        # get :sales_click_go
+        # post :sales_click_go
       end
     end
   end

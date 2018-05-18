@@ -10,7 +10,7 @@ class Spree::Report::SalesForPromotion < Spree::Report
       joins(:promotions).
       joins(:bill_address, :payments).
       where(spree_orders: { state: :complete, completed_at: dates }).
-      where(spree_payments: { state: :completed }).
+      # where(spree_payments: { state: :completed }).
       group("spree_orders.id, spree_promotions.name, spree_promotions.code, spree_orders.number,
             spree_addresses.firstname, spree_addresses.lastname, spree_orders.email,
             spree_orders.completed_at, spree_orders.total").

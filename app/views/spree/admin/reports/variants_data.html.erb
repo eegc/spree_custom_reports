@@ -15,7 +15,6 @@
         <th><%= Spree.t(:taxons) %></th>
         <th><%= Spree.t(:description) %></th>
         <th><%= Spree.t(:brand) %></th>
-        <th><%= Spree.t(:availability) %></th>
         <th><%= Spree.t(:price) %></th>
       </tr>
     </thead>
@@ -26,7 +25,6 @@
           <td><%= item[:taxons].join(', ') %></td>
           <td><%= item[:name] %></td>
           <td><%= brand(item) %></td>
-          <td><%= Spree.t("available.#{product_available?(item)}") %></td>
           <td><%= display_money(item[:price]) %></td>
         </tr>
       <% end %>

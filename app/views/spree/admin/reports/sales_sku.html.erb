@@ -29,7 +29,7 @@
         <td><%= link_to item[:sku], edit_admin_product_path(item[:product_id]) %></td>
         <td><%= item[:name] %></td>
         <td><%= item[:items_quant] %></td>
-        <td><%= display_price(item[:total]) %></td>
+        <td><%= item[:total] %></td>
       </tr>
     <% end %>
   </tbody>

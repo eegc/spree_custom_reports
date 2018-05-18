@@ -4,9 +4,10 @@ class Spree::Report::SalesSku < Spree::Report
   end
 
   def self.compute(dates)
+    # COALESCE(spree_variants.variant_name, spree_products.name as name,
     Spree::LineItem.
       select("spree_line_items.variant_id, spree_products.id AS product_id, spree_variants.sku,
-              COALESCE(spree_variants.variant_name, spree_products.name) as name,
+              spree_products.name ,
               ARRAY_AGG(DISTINCT(spree_orders.id)) AS order_ids,
               SUM(spree_line_items.quantity) AS items_quant,
               SUM(spree_line_items.price * spree_line_items.quantity + spree_line_items.adjustment_total) AS total").
@@ -14,8 +15,8 @@ class Spree::Report::SalesSku < Spree::Report
       joins("INNER JOIN spree_products ON spree_variants.product_id = spree_products.id").
       joins(order: :payments).
       where(spree_orders: { state: :complete, completed_at: dates }).
-      where(spree_payments: { state: :completed }).
-      group("spree_line_items.variant_id, spree_products.id, spree_variants.sku, spree_variants.variant_name, spree_products.name").order("total DESC")
+      # where(spree_payments: { state: :completed }).
+      group("spree_line_items.variant_id, spree_products.id, spree_variants.sku,  spree_products.name").order("total DESC")
   end
 
   def self.to_csv(dates)

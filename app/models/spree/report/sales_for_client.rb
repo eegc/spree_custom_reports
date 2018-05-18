@@ -9,7 +9,7 @@ class Spree::Report::SalesForClient < Spree::Report
   def self.compute(dates)
     Spree::LineItem.
       select("spree_line_items.id AS line_item_id, spree_variants.id, spree_products.id AS product_id,
-              spree_variants.sku, COALESCE(spree_variants.variant_name, spree_products.name) as name,
+              spree_variants.sku, spree_products.name as name,
               spree_line_items.quantity,
               (spree_line_items.price +  spree_line_items.adjustment_total/spree_line_items.quantity) AS unit_price,
               (spree_line_items.price * spree_line_items.quantity + spree_line_items.adjustment_total) AS total,
@@ -25,9 +25,9 @@ class Spree::Report::SalesForClient < Spree::Report
       joins("LEFT JOIN spree_products_taxons ON spree_products_taxons.product_id = spree_products.id LEFT JOIN spree_taxons ON spree_taxons.id = spree_products_taxons.taxon_id").
       joins("LEFT JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id LEFT JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id").
       where(spree_orders: { state: :complete, completed_at: dates }).
-      where(spree_payments: { state: :completed }).
+      # where(spree_payments: { state: :completed }).
       group("spree_line_items.id, spree_variants.id, spree_products.id, spree_variants.sku, spree_line_items.quantity, spree_line_items.price,
-        spree_addresses.firstname, spree_addresses.lastname, spree_addresses.address1, spree_addresses.address2, county, state_address, spree_orders.number, spree_orders.email")
+        spree_addresses.firstname, spree_addresses.lastname, spree_addresses.address1, spree_addresses.address2, state_address, spree_orders.number, spree_orders.email")
   end
 
   def self.to_csv(dates)
