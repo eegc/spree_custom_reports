@@ -10,6 +10,10 @@ Introduction goes here.
   ```ruby
   gem 'spree_custom_reports', github: 'engarcia/spree_custom_reports', branch: '3-0-stable'
   ```
+  or
+  ```ruby
+  gem 'spree_custom_reports', github: 'engarcia/spree_custom_reports', branch: '3-4-stable'
+  ```
 
   The `branch` option is important: it must match the version of Spree you're using.
   For example, use `3-0-stable` if you're using Spree `3-0-stable` or any `3.0.x` version.
