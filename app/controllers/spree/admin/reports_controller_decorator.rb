@@ -46,23 +46,23 @@ Spree::Admin::ReportsController.class_eval do
     end
   end
 
-  def sales_click_go
-    respond_to do |format|
-      format.html do
-        @items = Spree::Report::SalesClickGo.compute(@dates)
+  # def sales_click_go
+  #   respond_to do |format|
+  #     format.html do
+  #       @items = Spree::Report::SalesClickGo.compute(@dates)
 
-        @totals = {
-          total_amount: @items.inject(0){ |sum,i| sum + i[:total] },
-          items: @items.inject(0){ |sum,i| sum + i[:quantity] },
-          orders: @items.flat_map{ |i| i.number }.uniq.count
-        }
+  #       @totals = {
+  #         total_amount: @items.inject(0){ |sum,i| sum + i[:total] },
+  #         items: @items.inject(0){ |sum,i| sum + i[:quantity] },
+  #         orders: @items.flat_map{ |i| i.number }.uniq.count
+  #       }
 
-        @items = Kaminari.paginate_array(@items.to_a).page(params[:page]).per(20)
-      end
+  #       @items = Kaminari.paginate_array(@items.to_a).page(params[:page]).per(20)
+  #     end
 
-      format.csv  { send_file(report_klass: Spree::Report::SalesClickGo, dates: @dates) }
-    end
-  end
+  #     format.csv  { send_file(report_klass: Spree::Report::SalesClickGo, dates: @dates) }
+  #   end
+  # end
 
   def sales_for_state
     respond_to do |format|
@@ -141,7 +141,7 @@ Spree::Admin::ReportsController.class_eval do
     Spree::Admin::ReportsController.add_available_report!(:sales_for_promotion)
     Spree::Admin::ReportsController.add_available_report!(:variants_data)
     Spree::Admin::ReportsController.add_available_report!(:stock_details)
-    Spree::Admin::ReportsController.add_available_report!(:sales_click_go)
+    # Spree::Admin::ReportsController.add_available_report!(:sales_click_go)
   end
 
   def set_dates

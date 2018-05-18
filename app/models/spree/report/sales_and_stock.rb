@@ -6,7 +6,7 @@ class Spree::Report::SalesAndStock < Spree::Report
   def self.compute(dates)
     Spree::Variant.
       select("spree_variants.id, spree_products.id AS product_id, spree_variants.sku,
-              COALESCE(spree_variants.variant_name, spree_products.name) as name,
+              spree_products.name as name,
               spree_stock_items.count_on_hand AS stock, spree_prices.amount,
               ARRAY_AGG(DISTINCT(spree_taxons.name)) AS taxons, ARRAY_AGG(DISTINCT(spree_properties.name)) AS properties, ARRAY_AGG(DISTINCT(spree_product_properties.value)) AS property_values").
       joins(:product).
@@ -16,7 +16,7 @@ class Spree::Report::SalesAndStock < Spree::Report
       joins(:stock_locations, :stock_items).
       joins(line_items: [order: :payments]).
       where(spree_orders: { state: :complete, completed_at: dates }).
-      where(spree_payments: { state: :completed }).
+      # where(spree_payments: { state: :completed }).
       group("spree_variants.id, spree_products.id, spree_variants.sku, spree_prices.amount, stock")
   end
 

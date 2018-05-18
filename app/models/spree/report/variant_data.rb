@@ -10,7 +10,9 @@ class Spree::Report::VariantData < Spree::Report
       joins(:product, :default_price).
       joins("LEFT JOIN spree_products_taxons ON spree_products_taxons.product_id = spree_products.id LEFT JOIN spree_taxons ON spree_taxons.id = spree_products_taxons.taxon_id").
       joins("LEFT JOIN spree_product_properties ON spree_product_properties.product_id = spree_products.id LEFT JOIN spree_properties ON spree_properties.id = spree_product_properties.property_id").
-      group("spree_variants.id, spree_products.id, spree_products.name, spree_variants.sku, price, spree_variants.deleted_at, spree_products.available_on, product_deleted_at")
+      group("spree_variants.id, spree_products.id, spree_products.name, spree_variants.sku, price, spree_variants.deleted_at, spree_products.available_on, product_deleted_at").
+      order("spree_variants.sku, spree_products.name")
+
   end
 
   def self.to_csv

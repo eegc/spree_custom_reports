@@ -24,7 +24,7 @@
           <td><%= item[:name] %></td>
           <td><%= item[:location_name] %></td>
           <td><%= item[:stock] %></td>
-          <td><%= Spree.t("available.#{product_available?(item)}") %></td>
+          <td><%= item[:available_on].strftime("%m/%d/%Y") %></td>
         </tr>
       <% end %>
     </tbody>

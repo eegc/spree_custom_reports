@@ -27,7 +27,6 @@
         <th><%= Spree.t(:total) %></th>
         <th><%= Spree.t(:email) %></th>
         <th><%= Spree.t(:client_name) %></th>
-        <th><%= Spree.t(:run) %></th>
         <th><%= Spree.t(:address) %></th>
         <th><%= Spree.t(:state_address) %></th>
         <th><%= Spree.t(:order) %></th>
@@ -45,7 +44,6 @@
           <td><%= display_money(item[:total]) %></td>
           <td><%= item[:email] %></td>
           <td><%= full_name(item) %></td>
-          <td><%= run_format(item) %></td>
           <td><%= full_address(item) %></td>
           <td><%= item[:state_address] %></td>
           <td><%= item[:order_number] %></td>

@@ -12,8 +12,8 @@ class Spree::Report::SalesForMonth < Spree::Report
               spree_orders.item_count AS items_quant,
               (spree_orders.item_total + spree_orders.adjustment_total) AS total").
       joins(:payments).
-      where(spree_orders: { state: :complete, completed_at: dates }).
-      where(spree_payments: { state: :completed })
+      where(spree_orders: { state: :complete, completed_at: dates })
+      # .where(spree_payments: { state: :completed })
   end
 
   def self.to_csv(dates)
